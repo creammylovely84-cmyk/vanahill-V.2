@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vanahill Admin — จัดการการจอง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after { box-sizing: border-box; margin:0; padding:0; }
+
+  :root {
+    --forest: #1f3a32;
+    --forest-deep: #142621;
+    --sage: #6b8576;
+    --gold: #b8935a;
+    --gold-light: #d4b78a;
+    --cream: #f6f0e4;
+    --cream-warm: #ede5d3;
+    --ink: #1a1612;
+    --ink-soft: #4a4138;
+    --line: rgba(246,240,228,0.12);
+    --line-soft: rgba(246,240,228,0.06);
+    --danger: #c4634a;
+    --success: #6b8576;
+    --warning: #c79b3a;
+  }
+
+  body {
+    font-family: 'Prompt', sans-serif;
+    background: linear-gradient(160deg, var(--forest-deep) 0%, var(--forest) 100%);
+    background-attachment: fixed;
+    color: var(--cream);
+    font-weight: 300;
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(212,183,138,0.08), transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(107,133,118,0.12), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .serif { font-family: 'Cormorant Garamond', serif; }
+
+  /* ─────────── LOGIN ─────────── */
+  .login-wrapper {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+  }
+  .login-card {
+    width: 100%;
+    max-width: 380px;
+    background: rgba(20,38,33,0.6);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(12px);
+    border-radius: 6px;
+    padding: 40px 32px;
+    text-align: center;
+  }
+  .login-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    margin-bottom: 6px;
+  }
+  .login-logo em { color: var(--gold-light); font-style: italic; }
+  .login-tag {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 36px;
+  }
+  .login-input {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--cream);
+    padding: 14px 16px;
+    font-family: inherit;
+    font-size: 15px;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s;
+    margin-bottom: 16px;
+  }
+  .login-input:focus { border-color: var(--gold); }
+  .login-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--gold);
+    color: var(--forest-deep);
+    border: none;
+    border-radius: 4px;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .login-btn:hover { background: var(--gold-light); }
+  .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .login-error {
+    margin-top: 14px;
+    font-size: 12.5px;
+    color: var(--danger);
+    min-height: 18px;
+  }
+
+  /* ─────────── DASHBOARD ─────────── */
+  .dashboard {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+  }
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(20,38,33,0.4);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .topbar-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .topbar-logo em { color: var(--gold-light); font-style: italic; }
+  .topbar-logo .admin-badge {
+    font-family: 'Prompt', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    margin-left: 12px;
+    padding: 4px 8px;
+    border: 1px solid var(--gold);
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .logout-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--cream);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .logout-btn:hover { border-color: var(--gold); color: var(--gold-light); }
+
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding: 36px 32px 60px;
+  }
+
+  .card {
+    background: rgba(20,38,33,0.5);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 32px;
+  }
+
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .card-subtitle {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 28px;
+  }
+
+  /* ─────────── FORM ─────────── */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .form-row.single { grid-template-columns: 1fr; }
+
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block;
+    font-size: 10.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(246,240,228,0.55);
+    margin-bottom: 6px;
+  }
+  .field label .req { color: var(--gold); margin-left: 2px; }
+  .field input,
+  .field textarea,
+  .field select {
+    width: 100%;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--line);
+    color: var(--cream);
+    padding: 11px 13px;
+    font-family: inherit;
+    font-size: 14px;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.25s;
+  }
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus { border-color: var(--gold); }
+  .field input[type="date"] {
+    color-scheme: dark;
+    cursor: pointer;
+  }
+  .field textarea { resize: vertical; min-height: 60px; font-family: inherit; }
+  .field select option { background: var(--forest-deep); color: var(--cream); }
+
+  .nights-display {
+    font-size: 12px;
+    color: var(--gold-light);
+    margin-top: -8px;
+    margin-bottom: 16px;
+    min-height: 16px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--gold);
+    color: var(--forest-deep);
+    border: none;
+    border-radius: 4px;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .submit-btn:hover:not(:disabled) { background: var(--gold-light); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .form-msg {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    text-align: center;
+    line-height: 1.5;
+    display: none;
+  }
+  .form-msg.success {
+    background: rgba(107,133,118,0.18);
+    color: #c5dccd;
+    border: 1px solid rgba(107,133,118,0.3);
+    display: block;
+  }
+  .form-msg.error {
+    background: rgba(196,99,74,0.18);
+    color: #f3a692;
+    border: 1px solid rgba(196,99,74,0.3);
+    display: block;
+  }
+
+  /* ─────────── BOOKING LIST ─────────── */
+  .list-filter {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .filter-chip {
+    padding: 7px 14px;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: rgba(246,240,228,0.7);
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .filter-chip:hover { color: var(--cream); border-color: var(--gold-light); }
+  .filter-chip.active {
+    background: var(--gold);
+    color: var(--forest-deep);
+    border-color: var(--gold);
+  }
+
+  .booking-list {
+    list-style: none;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .booking-list::-webkit-scrollbar { width: 6px; }
+  .booking-list::-webkit-scrollbar-track { background: transparent; }
+  .booking-list::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+
+  .booking-item {
+    padding: 16px 0 16px 0;
+    border-bottom: 1px solid var(--line-soft);
+    transition: padding 0.2s;
+  }
+  .booking-item:last-child { border-bottom: none; }
+  .booking-item.has-balance {
+    border-left: 3px solid var(--warning);
+    padding-left: 14px;
+    margin-left: -14px;
+    padding-right: 4px;
+    background: rgba(199,155,58,0.04);
+  }
+  .booking-item.paid-full {
+    border-left: 3px solid var(--success);
+    padding-left: 14px;
+    margin-left: -14px;
+    padding-right: 4px;
+  }
+  .booking-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .booking-info { flex: 1; min-width: 0; }
+  .booking-name {
+    font-size: 15px;
+    font-weight: 400;
+    margin-bottom: 4px;
+    color: var(--cream);
+  }
+  .booking-name .empty { color: rgba(246,240,228,0.4); font-style: italic; font-size: 13px; }
+  .booking-dates {
+    font-size: 12.5px;
+    color: var(--gold-light);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+  }
+  .booking-meta {
+    font-size: 11px;
+    color: rgba(246,240,228,0.5);
+    margin-top: 4px;
+  }
+  .booking-payment {
+    font-size: 12px;
+    margin-top: 6px;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .payment-tag { display: inline-flex; align-items: center; gap: 4px; }
+  .payment-tag .label { color: rgba(246,240,228,0.45); font-size: 10.5px; }
+  .payment-tag .value { font-family: 'Cormorant Garamond', serif; font-size: 13.5px; font-weight: 500; }
+  .payment-tag.balance-tag .value { color: var(--warning); }
+  .payment-tag.paid-full-tag .value { color: var(--success); }
+  .booking-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-right: 6px;
+  }
+  .booking-status.confirmed { background: rgba(107,133,118,0.25); color: #b9d4c2; }
+  .booking-status.pending   { background: rgba(199,155,58,0.2); color: #e6c279; }
+  .booking-status.maintenance { background: rgba(232,140,58,0.2); color: #e8a85a; }
+  .booking-status.cancelled { background: rgba(196,99,74,0.2); color: #f3a692; opacity: 0.6; }
+
+  .cancel-btn {
+    background: transparent;
+    border: 1px solid rgba(196,99,74,0.4);
+    color: var(--danger);
+    padding: 5px 12px;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .cancel-btn:hover { background: rgba(196,99,74,0.15); color: #f3a692; }
+  .cancel-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: rgba(246,240,228,0.4);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .loading-spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(20,38,33,0.3);
+    border-top-color: var(--forest-deep);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ─────────── RESPONSIVE ─────────── */
+  @media (max-width: 900px) {
+    .main-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      padding: 20px 16px 40px;
+    }
+    .topbar { padding: 16px 20px; }
+    .topbar-logo { font-size: 18px; }
+    .topbar-logo .admin-badge { font-size: 9px; padding: 3px 6px; margin-left: 8px; }
+    .card { padding: 22px 18px; }
+    .form-row { grid-template-columns: 1fr; gap: 0; }
+    .booking-list { max-height: none; }
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="loginScreen" class="login-wrapper">
+  <div class="login-card">
+    <div class="login-logo">Vana<em>hill</em></div>
+    <div class="login-tag">Admin Portal</div>
+    <input type="password" id="passwordInput" class="login-input" placeholder="รหัสผ่าน" autocomplete="off">
+    <button id="loginBtn" class="login-btn">เข้าสู่ระบบ</button>
+    <div id="loginError" class="login-error"></div>
+  </div>
+</div>
+
+<!-- ═══ DASHBOARD ═══ -->
+<div id="dashboard" class="dashboard hidden">
+  <div class="topbar">
+    <div class="topbar-logo">
+      Vana<em>hill</em>
+      <span class="admin-badge">Admin</span>
+    </div>
+    <button id="logoutBtn" class="logout-btn">ออกจากระบบ</button>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- เพิ่มการจอง -->
+    <div class="card">
+      <h2 class="card-title">เพิ่มการจองใหม่</h2>
+      <div class="card-subtitle">— Add Booking —</div>
+
+      <form id="bookingForm">
+        <div class="field">
+          <label>ชื่อลูกค้า / ชื่อเล่น<span class="req">*</span></label>
+          <input type="text" id="name" required placeholder="เช่น พี่ส้ม, คุณเอก">
+        </div>
+
+        <div class="field">
+          <label>เบอร์โทรศัพท์</label>
+          <input type="tel" id="phone" placeholder="0xx-xxx-xxxx">
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>วันเข้าพัก<span class="req">*</span></label>
+            <input type="date" id="checkIn" required>
+          </div>
+          <div class="field">
+            <label>วันออก<span class="req">*</span></label>
+            <input type="date" id="checkOut" required>
+          </div>
+        </div>
+        <div id="nightsDisplay" class="nights-display"></div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>สถานะ</label>
+            <select id="status">
+              <option value="Confirmed">ยืนยัน (Confirmed)</option>
+              <option value="Pending">รอยืนยัน (Pending)</option>
+              <option value="Maintenance">ปิดปรับปรุง</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>ที่มา</label>
+            <select id="source">
+              <option value="LINE">LINE</option>
+              <option value="Phone">โทรศัพท์</option>
+              <option value="Walk-in">Walk-in</option>
+              <option value="Facebook">Facebook</option>
+              <option value="Other">อื่นๆ</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>ราคารวม (บาท)</label>
+            <input type="number" id="totalPrice" placeholder="0" min="0">
+          </div>
+          <div class="field">
+            <label>มัดจำ (บาท)</label>
+            <input type="number" id="deposit" placeholder="0" min="0">
+          </div>
+        </div>
+        <div id="balanceDisplay" class="nights-display"></div>
+
+        <div class="field">
+          <label>หมายเหตุ</label>
+          <textarea id="notes" placeholder="เช่น มากันกี่คน / คำขอพิเศษ"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">บันทึกการจอง</button>
+        <div id="formMsg" class="form-msg"></div>
+      </form>
+    </div>
+
+    <!-- รายการจอง -->
+    <div class="card">
+      <h2 class="card-title">รายการการจอง</h2>
+      <div class="card-subtitle">— Upcoming Bookings —</div>
+
+      <div class="list-filter" id="listFilter">
+        <button class="filter-chip active" data-filter="upcoming">เร็วๆ นี้</button>
+        <button class="filter-chip" data-filter="balance">ค้างเงิน</button>
+        <button class="filter-chip" data-filter="all">ทั้งหมด</button>
+        <button class="filter-chip" data-filter="confirmed">ยืนยันแล้ว</button>
+        <button class="filter-chip" data-filter="pending">รอยืนยัน</button>
+      </div>
+
+      <ul class="booking-list" id="bookingList">
+        <li class="empty-state">กำลังโหลด...</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   ⚙️ CONFIGURATION
+   ═══════════════════════════════════════════════ */
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzqsLtdEfi78NLPZk_lLuhobYxbze34Q4TdelCZ1hX_GF-3ahC7VOySlRNjMN5OpJtUzg/exec';
+
+/* ═══════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════ */
+let adminPassword = '';
+let allBookings = [];
+let currentFilter = 'upcoming';
+
+/* ═══════════════════════════════════════════════
+   LOGIN / LOGOUT
+   ═══════════════════════════════════════════════ */
+const $ = (id) => document.getElementById(id);
+
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('vanahill_admin_pwd');
+  if (saved) tryLogin(saved, true);
+});
+
+$('loginBtn').addEventListener('click', () => {
+  const pwd = $('passwordInput').value.trim();
+  if (!pwd) {
+    $('loginError').textContent = 'กรุณาใส่รหัสผ่าน';
+    return;
+  }
+  tryLogin(pwd, false);
+});
+
+$('passwordInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') $('loginBtn').click();
+});
+
+$('logoutBtn').addEventListener('click', () => {
+  localStorage.removeItem('vanahill_admin_pwd');
+  adminPassword = '';
+  $('dashboard').classList.add('hidden');
+  $('loginScreen').classList.remove('hidden');
+  $('passwordInput').value = '';
+});
+
+async function tryLogin(pwd, silent) {
+  $('loginError').textContent = '';
+  $('loginBtn').disabled = true;
+  $('loginBtn').textContent = silent ? 'กำลังโหลด…' : 'กำลังตรวจสอบ…';
+
+  // ทดสอบรหัสด้วยการเรียก API ที่ต้องใช้รหัส
+  // ใช้ updateStatus กับ rowIndex ปลอม — ถ้ารหัสถูก จะตอบ error เรื่อง rowIndex (success login)
+  // ถ้ารหัสผิด จะตอบ "รหัสผ่านไม่ถูกต้อง"
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ secret: pwd, action: 'updateStatus', rowIndex: 0 })
+    });
+    const data = await res.json();
+    if (data.message && data.message.includes('รหัสผ่านไม่ถูกต้อง')) {
+      $('loginError').textContent = '✗ รหัสผ่านไม่ถูกต้อง';
+      $('loginBtn').disabled = false;
+      $('loginBtn').textContent = 'เข้าสู่ระบบ';
+      return;
+    }
+    // login OK
+    adminPassword = pwd;
+    localStorage.setItem('vanahill_admin_pwd', pwd);
+    $('loginScreen').classList.add('hidden');
+    $('dashboard').classList.remove('hidden');
+    loadBookings();
+  } catch (err) {
+    $('loginError').textContent = '✗ เชื่อมต่อเซิร์ฟเวอร์ไม่ได้';
+    $('loginBtn').disabled = false;
+    $('loginBtn').textContent = 'เข้าสู่ระบบ';
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   FORM — ADD BOOKING
+   ═══════════════════════════════════════════════ */
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+$('checkIn').min = todayStr();
+
+function updateNightsDisplay() {
+  const ci = $('checkIn').value;
+  const co = $('checkOut').value;
+  if (ci && co) {
+    const a = new Date(ci);
+    const b = new Date(co);
+    const nights = Math.round((b - a) / 86400000);
+    if (nights > 0) {
+      $('nightsDisplay').textContent = `— ${nights} คืน —`;
+    } else {
+      $('nightsDisplay').textContent = '⚠ วันออกต้องอยู่หลังวันเข้า';
+    }
+  } else {
+    $('nightsDisplay').textContent = '';
+  }
+}
+
+$('checkIn').addEventListener('change', () => {
+  $('checkOut').min = $('checkIn').value;
+  updateNightsDisplay();
+});
+$('checkOut').addEventListener('change', updateNightsDisplay);
+
+function updateBalance() {
+  const total = parseFloat($('totalPrice').value) || 0;
+  const deposit = parseFloat($('deposit').value) || 0;
+  const el = $('balanceDisplay');
+  if (total <= 0 && deposit <= 0) { el.textContent = ''; return; }
+  const balance = total - deposit;
+  if (balance > 0) {
+    el.textContent = `— คงเหลือ ฿${balance.toLocaleString('en-US')} —`;
+    el.style.color = 'var(--warning)';
+  } else if (balance === 0 && total > 0) {
+    el.textContent = `✓ ชำระเต็มจำนวน`;
+    el.style.color = 'var(--success)';
+  } else if (balance < 0) {
+    el.textContent = `⚠ มัดจำเกินราคารวม`;
+    el.style.color = 'var(--danger)';
+  } else {
+    el.textContent = '';
+  }
+}
+$('totalPrice').addEventListener('input', updateBalance);
+$('deposit').addEventListener('input', updateBalance);
+
+$('bookingForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const ci = $('checkIn').value;
+  const co = $('checkOut').value;
+  if (new Date(co) <= new Date(ci)) {
+    showFormMsg('วันออกต้องอยู่หลังวันเข้า', 'error');
+    return;
+  }
+
+  const btn = $('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-spinner"></span> กำลังบันทึก…';
+
+  const payload = {
+    secret: adminPassword,
+    action: 'addBooking',
+    name: $('name').value.trim(),
+    phone: $('phone').value.trim(),
+    checkIn: ci,
+    checkOut: co,
+    status: $('status').value,
+    source: $('source').value,
+    totalPrice: $('totalPrice').value,
+    deposit: $('deposit').value,
+    notes: $('notes').value.trim()
+  };
+
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+
+    if (data.status === 'success') {
+      showFormMsg(`✓ บันทึกแล้ว — ID: ${data.bookingId}`, 'success');
+      $('bookingForm').reset();
+      $('nightsDisplay').textContent = '';
+      $('balanceDisplay').textContent = '';
+      loadBookings();
+    } else {
+      showFormMsg('✗ ' + (data.message || 'เกิดข้อผิดพลาด'), 'error');
+    }
+  } catch (err) {
+    showFormMsg('✗ เชื่อมต่อเซิร์ฟเวอร์ไม่ได้', 'error');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'บันทึกการจอง';
+});
+
+function showFormMsg(text, type) {
+  const m = $('formMsg');
+  m.textContent = text;
+  m.className = 'form-msg ' + type;
+  if (type === 'success') {
+    setTimeout(() => { m.className = 'form-msg'; }, 6000);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   BOOKING LIST
+   ═══════════════════════════════════════════════ */
+async function loadBookings() {
+  $('bookingList').innerHTML = '<li class="empty-state">กำลังโหลด...</li>';
+  try {
+    const res = await fetch(APPS_SCRIPT_URL + '?action=getBookings');
+    const data = await res.json();
+    if (data.status === 'success') {
+      allBookings = data.bookings;
+      renderBookings();
+    } else {
+      $('bookingList').innerHTML = '<li class="empty-state">โหลดข้อมูลไม่สำเร็จ</li>';
+    }
+  } catch (err) {
+    $('bookingList').innerHTML = '<li class="empty-state">เชื่อมต่อไม่ได้</li>';
+  }
+}
+
+function categorizeStatus(s) {
+  s = String(s || '').toLowerCase().trim();
+  if (s === 'cancelled' || s === 'canceled' || s.includes('ยกเลิก')) return 'cancelled';
+  if (s.includes('maintenance') || s.includes('ปรับปรุง') || s === 'ปิด') return 'maintenance';
+  if (s === 'pending' || s.includes('รอ')) return 'pending';
+  return 'confirmed';
+}
+
+function formatThaiDate(s) {
+  const d = new Date(s);
+  const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  return `${d.getDate()} ${months[d.getMonth()]} ${(d.getFullYear()+543) % 100}`;
+}
+
+function renderBookings() {
+  const list = $('bookingList');
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  let filtered = allBookings.slice();
+
+  if (currentFilter === 'upcoming') {
+    filtered = filtered.filter(b => new Date(b.checkOut) >= today && categorizeStatus(b.status) !== 'cancelled');
+  } else if (currentFilter === 'balance') {
+    filtered = filtered.filter(b => {
+      const balance = (b.totalPrice || 0) - (b.deposit || 0);
+      const cat = categorizeStatus(b.status);
+      return balance > 0 && cat !== 'cancelled' && cat !== 'maintenance' && new Date(b.checkOut) >= today;
+    });
+  } else if (currentFilter === 'confirmed') {
+    filtered = filtered.filter(b => categorizeStatus(b.status) === 'confirmed' && new Date(b.checkOut) >= today);
+  } else if (currentFilter === 'pending') {
+    filtered = filtered.filter(b => categorizeStatus(b.status) === 'pending');
+  }
+
+  // เรียงตามวันเข้า (ใกล้สุดก่อน)
+  filtered.sort((a, b) => new Date(a.checkIn) - new Date(b.checkIn));
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<li class="empty-state">ไม่มีรายการ</li>';
+    return;
+  }
+
+  list.innerHTML = '';
+  filtered.forEach(b => {
+    const cat = categorizeStatus(b.status);
+    const li = document.createElement('li');
+    li.className = 'booking-item';
+
+    const total = b.totalPrice || 0;
+    const deposit = b.deposit || 0;
+    const balance = total - deposit;
+    const showPayment = total > 0 || deposit > 0;
+    const isActiveBooking = cat !== 'cancelled' && cat !== 'maintenance';
+    if (showPayment && isActiveBooking) {
+      if (balance > 0) li.classList.add('has-balance');
+      else if (balance === 0 && total > 0) li.classList.add('paid-full');
+    }
+
+    const statusLabel = {
+      confirmed: 'ยืนยันแล้ว',
+      pending: 'รอยืนยัน',
+      maintenance: 'ปิดปรับปรุง',
+      cancelled: 'ยกเลิกแล้ว'
+    }[cat];
+
+    let paymentHtml = '';
+    if (showPayment && isActiveBooking) {
+      if (balance > 0) {
+        paymentHtml = `
+          <div class="booking-payment">
+            <span class="payment-tag"><span class="label">รวม</span><span class="value">฿${total.toLocaleString('en-US')}</span></span>
+            <span class="payment-tag"><span class="label">มัดจำ</span><span class="value">฿${deposit.toLocaleString('en-US')}</span></span>
+            <span class="payment-tag balance-tag"><span class="label">คงเหลือ</span><span class="value">฿${balance.toLocaleString('en-US')}</span></span>
+          </div>`;
+      } else if (balance === 0 && total > 0) {
+        paymentHtml = `
+          <div class="booking-payment">
+            <span class="payment-tag"><span class="label">รวม</span><span class="value">฿${total.toLocaleString('en-US')}</span></span>
+            <span class="payment-tag paid-full-tag"><span class="value">✓ ชำระครบ</span></span>
+          </div>`;
+      }
+    }
+
+    li.innerHTML = `
+      <div class="booking-row">
+        <div class="booking-info">
+          <div class="booking-name">${b.guestName ? escapeHtml(b.guestName) : '<span class="empty">(ไม่ระบุชื่อ)</span>'}</div>
+          <div class="booking-dates">${formatThaiDate(b.checkIn)} → ${formatThaiDate(b.checkOut)}</div>
+          <div class="booking-meta">
+            <span class="booking-status ${cat}">${statusLabel}</span>
+            ${b.phone ? '📞 ' + escapeHtml(b.phone) : ''}
+          </div>
+          ${paymentHtml}
+        </div>
+        ${cat !== 'cancelled' ? `<button class="cancel-btn" data-row="${b.rowIndex}">ยกเลิก</button>` : ''}
+      </div>
+    `;
+    list.appendChild(li);
+  });
+
+  // bind cancel buttons
+  list.querySelectorAll('.cancel-btn').forEach(btn => {
+    btn.addEventListener('click', () => cancelBooking(btn));
+  });
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+async function cancelBooking(btn) {
+  const rowIndex = btn.dataset.row;
+  if (!confirm('ยืนยันการยกเลิกการจองนี้?')) return;
+
+  btn.disabled = true;
+  btn.textContent = 'กำลังยกเลิก…';
+
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        secret: adminPassword,
+        action: 'cancelBooking',
+        rowIndex: rowIndex
+      })
+    });
+    const data = await res.json();
+    if (data.status === 'success') {
+      loadBookings();
+    } else {
+      alert('ยกเลิกไม่สำเร็จ: ' + (data.message || 'unknown'));
+      btn.disabled = false;
+      btn.textContent = 'ยกเลิก';
+    }
+  } catch (err) {
+    alert('เชื่อมต่อเซิร์ฟเวอร์ไม่ได้');
+    btn.disabled = false;
+    btn.textContent = 'ยกเลิก';
+  }
+}
+
+/* Filter chips */
+$('listFilter').addEventListener('click', (e) => {
+  if (!e.target.classList.contains('filter-chip')) return;
+  $('listFilter').querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  e.target.classList.add('active');
+  currentFilter = e.target.dataset.filter;
+  renderBookings();
+});
+</script>
+</body>
+</html>

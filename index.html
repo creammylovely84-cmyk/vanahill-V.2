@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vanahill Poolvilla — ปฏิทินวันว่าง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after { box-sizing: border-box; margin:0; padding:0; }
+
+  :root {
+    --forest: #1f3a32;
+    --forest-deep: #142621;
+    --sage: #6b8576;
+    --gold: #b8935a;
+    --gold-light: #d4b78a;
+    --cream: #f6f0e4;
+    --cream-warm: #ede5d3;
+    --ink: #1a1612;
+    --ink-soft: #4a4138;
+    --booked: #c4634a;
+    --line: rgba(26,22,18,0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Prompt', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-weight: 300;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ─────────────── HERO ─────────────── */
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    background:
+      radial-gradient(ellipse at top, rgba(184,147,90,0.1), transparent 60%),
+      linear-gradient(180deg, var(--forest-deep), var(--forest));
+    color: var(--cream);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(212,183,138,0.15), transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(107,133,118,0.2), transparent 50%);
+    pointer-events: none;
+  }
+
+  .nav {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 32px 56px;
+    z-index: 10;
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .logo span { color: var(--gold-light); font-style: italic; }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .nav-links a {
+    color: var(--cream);
+    text-decoration: none;
+    opacity: 0.75;
+    transition: opacity 0.3s;
+  }
+  .nav-links a:hover { opacity: 1; }
+
+  .hero-content {
+    position: relative;
+    text-align: center;
+    padding: 80px 24px 120px;
+    z-index: 5;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 28px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.9s 0.2s forwards;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(64px, 12vw, 168px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1s 0.4s forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--gold-light); font-weight: 400; }
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(20px, 2.5vw, 30px);
+    color: var(--gold-light);
+    margin-bottom: 36px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1s 0.6s forwards;
+  }
+  .hero-desc {
+    max-width: 540px;
+    margin: 0 auto 48px;
+    font-size: 15px;
+    line-height: 1.85;
+    color: rgba(246,240,228,0.78);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1s 0.8s forwards;
+  }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 40px;
+    background: var(--gold);
+    color: var(--forest-deep);
+    border: none;
+    text-decoration: none;
+    font-family: 'Prompt', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1s 1s forwards;
+  }
+  .cta-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  .deco-frond {
+    position: absolute;
+    width: 320px;
+    opacity: 0.13;
+    color: var(--gold-light);
+    pointer-events: none;
+  }
+  .deco-frond.left { left: -80px; bottom: -60px; transform: rotate(-25deg); }
+  .deco-frond.right { right: -80px; top: 60px; transform: rotate(165deg); }
+
+  /* ─────────── CALENDAR SECTION ─────────── */
+  .calendar-section {
+    padding: 110px 48px;
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+  .section-header {
+    text-align: center;
+    margin-bottom: 72px;
+  }
+  .section-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(40px, 5.5vw, 60px);
+    line-height: 1.1;
+    color: var(--forest-deep);
+    margin-bottom: 18px;
+    letter-spacing: -0.01em;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-subtitle {
+    color: var(--ink-soft);
+    max-width: 540px;
+    margin: 0 auto;
+    font-size: 14.5px;
+  }
+
+  .grid-layout {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  /* ─────────── CALENDAR ─────────── */
+  .calendar-card {
+    background: white;
+    border-radius: 4px;
+    padding: 40px;
+    box-shadow: 0 1px 3px rgba(26,22,18,0.04), 0 16px 50px rgba(26,22,18,0.07);
+    border: 1px solid var(--line);
+  }
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .month-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--forest-deep);
+    letter-spacing: 0.01em;
+  }
+  .nav-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: transparent;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: all 0.25s;
+    color: var(--ink-soft);
+  }
+  .nav-btn:hover { background: var(--cream-warm); color: var(--forest); border-color: var(--forest); }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+  .day-name {
+    text-align: center;
+    font-size: 10.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding: 14px 0 10px;
+    font-weight: 500;
+  }
+  .day-name.weekend { color: var(--gold); }
+
+  .day {
+    min-height: 72px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 8px 4px;
+    background: rgba(74,138,94,0.07);
+    border-radius: 4px;
+    transition: background 0.2s;
+    position: relative;
+    color: var(--ink);
+    user-select: none;
+    cursor: default;
+  }
+  .day-num { font-size: 14px; font-weight: 400; line-height: 1; }
+  .day-price {
+    font-size: 10.5px;
+    color: var(--gold);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+  .day-status {
+    font-size: 10px;
+    color: var(--booked);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 3px;
+  }
+
+  .day.weekend { background: rgba(74,138,94,0.06); }
+  .day.holiday { background: rgba(74,106,154,0.16); }
+  .day.holiday .day-num { color: #3a5a8a; font-weight: 500; }
+  .day.holiday .day-price { color: #4a6a9a; font-weight: 500; }
+  .day.maintenance { background: rgba(232,140,58,0.2); }
+  .day.maintenance .day-num {
+    color: #b86d20;
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+  }
+  .day.maintenance .day-status { color: #b86d20; }
+  .day.hot { background: rgba(229,80,57,0.1); }
+  .day.hot .day-num { color: #d63f1f; font-weight: 600; }
+  .day.hot .day-price {
+    color: #d63f1f;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+  }
+  .day-flame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 0;
+    margin: 1px 0;
+  }
+  .flame-icon {
+    color: #e85d3a;
+    flex-shrink: 0;
+    animation: flicker 1.3s ease-in-out infinite;
+    filter: drop-shadow(0 0 4px rgba(232,93,58,0.55));
+  }
+  @keyframes flicker {
+    0%, 100% { opacity: 1; transform: scale(1) rotate(-1deg); }
+    25% { opacity: 0.85; transform: scale(0.95) rotate(1deg); }
+    50% { opacity: 0.95; transform: scale(1.05) rotate(-1deg); }
+    75% { opacity: 0.8; transform: scale(0.93) rotate(1.5deg); }
+  }
+  .day.empty { background: transparent; }
+  .day.disabled .day-num { color: rgba(26,22,18,0.22); }
+  .day.disabled .day-price { display: none; }
+
+  .day.booked { background: rgba(196,99,74,0.14); }
+  .day.booked .day-num {
+    color: var(--booked);
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+  }
+
+  .day.today { box-shadow: inset 0 0 0 1.5px var(--forest); }
+  .day.today .day-num { font-weight: 600; }
+
+  .calendar-legend {
+    display: flex;
+    gap: 28px;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--ink-soft);
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .legend-dot.available { background: rgba(74,138,94,0.25); border: 1px solid rgba(74,138,94,0.5); }
+  .legend-dot.holiday-dot { background: rgba(74,106,154,0.3); border: 1px solid rgba(74,106,154,0.55); }
+  .legend-dot.maintenance-dot { background: rgba(232,140,58,0.35); border: 1px solid rgba(232,140,58,0.6); }
+  .legend-dot.booked-dot { background: rgba(196,99,74,0.25); border: 1px solid rgba(196,99,74,0.5); }
+  .legend-note {
+    margin-left: auto;
+    color: var(--ink-soft);
+    font-size: 11.5px;
+    font-style: italic;
+  }
+
+  /* ─────────── CALENDAR CONTACT STRIP ─────────── */
+  .calendar-contact-strip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    padding: 22px 16px 6px;
+    margin-top: 16px;
+    border-top: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+  .contact-strip-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    font-weight: 400;
+    transition: color 0.25s;
+  }
+  .contact-strip-item:hover { color: var(--gold); }
+  .contact-strip-item svg {
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  .contact-strip-item.line svg { color: #06c755; }
+  .contact-strip-item.line:hover { color: #06c755; }
+
+  /* ─────────── INFO / CONTACT CARD ─────────── */
+  .info-card {
+    background: var(--forest-deep);
+    color: var(--cream);
+    border-radius: 4px;
+    padding: 40px;
+    position: sticky;
+    top: 24px;
+    box-shadow: 0 16px 50px rgba(26,22,18,0.18);
+    background-image: radial-gradient(circle at 20% 0%, rgba(184,147,90,0.12), transparent 50%);
+  }
+  .info-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .info-subtitle {
+    font-size: 13px;
+    color: var(--gold-light);
+    margin-bottom: 28px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .lock-banner {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: rgba(184,147,90,0.1);
+    border: 1px solid rgba(184,147,90,0.25);
+    border-radius: 4px;
+    padding: 16px 18px;
+    margin-bottom: 28px;
+  }
+  .lock-banner svg { flex-shrink: 0; color: var(--gold-light); margin-top: 1px; }
+  .lock-banner-text {
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: rgba(246,240,228,0.85);
+  }
+  .lock-banner-text strong {
+    color: var(--gold-light);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .contact-list { list-style: none; }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(246,240,228,0.1);
+    color: var(--cream);
+    text-decoration: none;
+    transition: padding-left 0.3s;
+  }
+  .contact-list li:last-child .contact-item { border-bottom: none; }
+  .contact-item:hover { padding-left: 6px; }
+  .contact-item:hover .contact-arrow { opacity: 1; transform: translateX(0); }
+
+  .contact-icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(184,147,90,0.12);
+    border: 1px solid rgba(184,147,90,0.25);
+    display: grid;
+    place-items: center;
+    color: var(--gold-light);
+    flex-shrink: 0;
+  }
+  .contact-info { flex: 1; }
+  .contact-label {
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(246,240,228,0.5);
+    margin-bottom: 3px;
+    display: block;
+  }
+  .contact-value {
+    font-size: 15px;
+    color: var(--cream);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    display: block;
+  }
+  .contact-arrow {
+    color: var(--gold-light);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: all 0.3s;
+  }
+
+  .info-hours {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(246,240,228,0.1);
+    font-size: 12px;
+    color: rgba(246,240,228,0.6);
+    text-align: center;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .info-hours strong { color: var(--gold-light); font-style: normal; font-family: 'Prompt', sans-serif; font-weight: 400; }
+
+  /* ─────────── ABOUT VILLA ─────────── */
+  .villa-section {
+    padding: 110px 48px;
+    background: var(--cream-warm);
+    position: relative;
+  }
+  .villa-feature {
+    max-width: 1320px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+
+  .villa-visual {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: 4px;
+    overflow: hidden;
+    background: linear-gradient(160deg, #2d4a40 0%, var(--forest-deep) 100%);
+    box-shadow: 0 24px 60px rgba(26,22,18,0.15);
+  }
+  .villa-visual::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 25%, rgba(212,183,138,0.25), transparent 50%),
+      radial-gradient(circle at 75% 80%, rgba(107,133,118,0.3), transparent 60%);
+  }
+  .villa-visual svg.scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .villa-visual-tag {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    z-index: 2;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  }
+  .villa-visual-tag::before {
+    content: '';
+    display: block;
+    width: 32px; height: 1px;
+    background: var(--gold-light);
+    margin-bottom: 10px;
+  }
+
+  .villa-details .section-eyebrow { text-align: left; margin-bottom: 14px; }
+  .villa-details .section-title {
+    text-align: left;
+    margin-bottom: 22px;
+    font-size: clamp(36px, 4.5vw, 52px);
+  }
+  .villa-details-desc {
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.85;
+    margin-bottom: 32px;
+  }
+
+  .quick-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 36px;
+  }
+  .quick-stat {
+    padding: 20px 12px;
+    text-align: center;
+    border-right: 1px solid var(--line);
+  }
+  .quick-stat:last-child { border-right: none; }
+  .quick-stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--forest);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .quick-stat-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .amenities-title {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .amenities {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 24px;
+    margin-bottom: 32px;
+  }
+  .amenity {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13.5px;
+    color: var(--ink);
+  }
+  .amenity svg {
+    flex-shrink: 0;
+    color: var(--forest);
+    opacity: 0.85;
+  }
+
+  .villa-price-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .villa-price-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: var(--forest);
+    font-weight: 500;
+  }
+  .villa-price-amount small {
+    font-size: 16px;
+    color: var(--ink-soft);
+    font-family: 'Prompt', sans-serif;
+    font-weight: 300;
+  }
+  .villa-price-unit {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ─────────── LOCATION ─────────── */
+  .location-section {
+    padding: 110px 48px;
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+  .location-stage {
+    position: relative;
+    margin-top: 24px;
+  }
+  .map-wrapper {
+    position: relative;
+    height: 540px;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(26,22,18,0.04), 0 16px 50px rgba(26,22,18,0.1);
+    background: var(--cream-warm);
+  }
+  .map-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  .location-overlay {
+    position: absolute;
+    top: 36px;
+    left: 36px;
+    width: 380px;
+    background: var(--forest-deep);
+    color: var(--cream);
+    padding: 36px;
+    border-radius: 4px;
+    box-shadow: 0 16px 50px rgba(0,0,0,0.3);
+    background-image: radial-gradient(circle at 20% 0%, rgba(184,147,90,0.15), transparent 50%);
+  }
+  .location-overlay h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .location-overlay-tag {
+    font-size: 13px;
+    color: var(--gold-light);
+    margin-bottom: 24px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .location-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(246,240,228,0.1);
+  }
+  .location-row:last-of-type { border-bottom: none; }
+  .location-row svg {
+    flex-shrink: 0;
+    color: var(--gold-light);
+    margin-top: 2px;
+  }
+  .location-row-content { flex: 1; }
+  .location-row-label {
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(246,240,228,0.5);
+    margin-bottom: 5px;
+  }
+  .location-row-value {
+    font-size: 14px;
+    color: var(--cream);
+    line-height: 1.6;
+  }
+  .directions-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding: 16px 24px;
+    background: var(--gold);
+    color: var(--forest-deep);
+    text-decoration: none;
+    font-family: 'Prompt', sans-serif;
+    font-weight: 500;
+    font-size: 11.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+  .directions-btn:hover { background: var(--gold-light); }
+
+  /* ─────────── FOOTER ─────────── */
+  footer {
+    background: var(--forest-deep);
+    color: rgba(246,240,228,0.7);
+    padding: 70px 48px 32px;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    color: var(--cream);
+    letter-spacing: 0.18em;
+    margin-bottom: 8px;
+  }
+  .footer-tagline {
+    font-style: italic;
+    color: var(--gold-light);
+    margin-bottom: 36px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+  }
+  .footer-contact {
+    display: flex;
+    justify-content: center;
+    gap: 44px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    font-size: 13px;
+  }
+  .footer-divider {
+    height: 1px;
+    background: rgba(246,240,228,0.1);
+    margin: 28px auto;
+    max-width: 280px;
+  }
+  .footer-copy {
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    color: rgba(246,240,228,0.4);
+  }
+
+  @media (max-width: 900px) {
+    .grid-layout { grid-template-columns: 1fr; gap: 32px; }
+    .calendar-section { padding: 70px 16px; }
+    .villa-section { padding: 70px 20px; }
+    .villa-feature { grid-template-columns: 1fr; gap: 36px; }
+    .villa-visual { aspect-ratio: 4/3; max-height: 360px; }
+    .villa-details .section-eyebrow,
+    .villa-details .section-title { text-align: left; }
+    .location-section { padding: 70px 16px; }
+    .map-wrapper { height: 380px; }
+    .location-overlay {
+      position: static;
+      width: 100%;
+      margin-top: 16px;
+      padding: 28px 22px;
+    }
+    .nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .calendar-card, .info-card { padding: 24px 18px; }
+    .info-card { position: static; }
+    .day { min-height: 56px; gap: 3px; padding: 6px 2px; }
+    .day-num { font-size: 13px; }
+    .day-price { font-size: 9.5px; }
+    .day-status { font-size: 9px; }
+    .calendar-legend { gap: 14px 20px; font-size: 11.5px; }
+    .legend-note { margin-left: 0; flex-basis: 100%; text-align: left; margin-top: 6px; }
+    .amenities { grid-template-columns: 1fr; }
+    .quick-stat-num { font-size: 28px; }
+    footer { padding: 50px 24px 28px; }
+    .footer-contact { gap: 20px; flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<header class="hero">
+  <nav class="nav">
+    <div class="logo">Vana<span>hill</span></div>
+    <ul class="nav-links">
+      <li><a href="#calendar">ปฏิทิน</a></li>
+      <li><a href="#villa">วิลล่า</a></li>
+      <li><a href="#location">ที่ตั้ง</a></li>
+      <li><a href="#contact">ติดต่อ</a></li>
+    </ul>
+  </nav>
+
+  <svg class="deco-frond left" viewBox="0 0 200 300" fill="none" stroke="currentColor" stroke-width="1.2">
+    <path d="M100 20 Q120 80 110 150 Q100 220 95 290"/>
+    <path d="M100 60 Q60 70 30 95 M100 95 Q140 100 170 125 M100 130 Q65 145 40 175 M100 165 Q138 175 162 200 M100 200 Q72 215 52 245 M100 235 Q132 245 152 268"/>
+  </svg>
+  <svg class="deco-frond right" viewBox="0 0 200 300" fill="none" stroke="currentColor" stroke-width="1.2">
+    <path d="M100 20 Q120 80 110 150 Q100 220 95 290"/>
+    <path d="M100 60 Q60 70 30 95 M100 95 Q140 100 170 125 M100 130 Q65 145 40 175 M100 165 Q138 175 162 200 M100 200 Q72 215 52 245 M100 235 Q132 245 152 268"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Private Pool Villa Retreat</div>
+    <h1 class="hero-title">Vana<em>hill</em></h1>
+    <div class="hero-subtitle">— where serenity meets the hills —</div>
+    <p class="hero-desc">พูลวิลล่าส่วนตัวท่ามกลางขุนเขา สระว่ายน้ำส่วนตัว วิวธรรมชาติ บรรยากาศเงียบสงบ เหมาะกับการพักผ่อนสุดพิเศษกับครอบครัวและคนที่คุณรัก</p>
+    <a href="#calendar" class="cta-btn">
+      ดูปฏิทินวันว่าง
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- ═══ CALENDAR ═══ -->
+<section class="calendar-section" id="calendar">
+  <div class="section-header">
+    <div class="section-eyebrow">Availability &amp; Rates</div>
+    <h2 class="section-title">ปฏิทิน <em>วันว่าง</em></h2>
+    <p class="section-subtitle">ตรวจสอบวันว่างและราคาพักรายวันได้ที่นี่ — ราคาแตกต่างกันตามวัน วันศุกร์/เสาร์สูงกว่า และมีราคาพิเศษช่วงปีใหม่/สงกรานต์</p>
+  </div>
+
+  <div class="grid-layout">
+    <!-- CALENDAR CARD -->
+    <div class="calendar-card">
+      <div class="calendar-header">
+        <button class="nav-btn" id="prevMonth" aria-label="Previous month">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="month-title" id="monthTitle"></div>
+        <button class="nav-btn" id="nextMonth" aria-label="Next month">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      <div class="calendar-grid" id="calendarGrid"></div>
+
+      <div class="calendar-legend">
+        <div class="legend-item"><span class="legend-dot available"></span> วันว่าง</div>
+        <div class="legend-item">
+          <svg class="flame-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2c0 4-4 5-4 9 0 3 2 5 4 5s4-2 4-5c0-2-2-3-2-5 0 0-2 0-2-4z"/></svg>
+          Hot Price (ลด ฿500)
+        </div>
+        <div class="legend-item"><span class="legend-dot holiday-dot"></span> เทศกาล</div>
+        <div class="legend-item"><span class="legend-dot maintenance-dot"></span> ปิดปรับปรุง</div>
+        <div class="legend-item"><span class="legend-dot booked-dot"></span> ติดจอง</div>
+        <div class="legend-note">ราคา 4,900–8,900 บาท/คืน</div>
+      </div>
+
+      <div class="calendar-contact-strip">
+        <a class="contact-strip-item" href="tel:+66996188871">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+          099-618-8871
+        </a>
+        <a class="contact-strip-item" href="tel:+66612956509">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+          061-295-6509
+        </a>
+        <a class="contact-strip-item line" href="https://line.me/ti/p/~vanahill" target="_blank" rel="noopener">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+          </svg>
+          @vanahill
+        </a>
+      </div>
+    </div>
+
+    <!-- INFO / CONTACT CARD -->
+    <div class="info-card">
+      <h3 class="info-title">วิธีการจอง</h3>
+      <p class="info-subtitle">— How to Book —</p>
+
+      <div class="lock-banner">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="4" y="11" width="16" height="10" rx="1"/>
+          <path d="M8 11V7a4 4 0 018 0v4"/>
+        </svg>
+        <div class="lock-banner-text">
+          <strong>ระบบจองออนไลน์เร็วๆ นี้</strong>
+          ขณะนี้กรุณาติดต่อจองผ่านช่องทางด้านล่าง ทีมงานจะยืนยันการจองให้ภายใน 24 ชั่วโมง
+        </div>
+      </div>
+
+      <ul class="contact-list">
+        <li>
+          <a class="contact-item" href="tel:+66996188871">
+            <span class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+              </svg>
+            </span>
+            <span class="contact-info">
+              <span class="contact-label">โทรศัพท์ / Phone</span>
+              <span class="contact-value">099-618-8871</span>
+            </span>
+            <svg class="contact-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
+          </a>
+        </li>
+
+        <li>
+          <a class="contact-item" href="tel:+66612956509">
+            <span class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+              </svg>
+            </span>
+            <span class="contact-info">
+              <span class="contact-label">โทรศัพท์ / Phone</span>
+              <span class="contact-value">061-295-6509</span>
+            </span>
+            <svg class="contact-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
+          </a>
+        </li>
+
+        <li>
+          <a class="contact-item" href="https://line.me/ti/p/~vanahill" target="_blank" rel="noopener">
+            <span class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+              </svg>
+            </span>
+            <span class="contact-info">
+              <span class="contact-label">LINE Official</span>
+              <span class="contact-value">@vanahill</span>
+            </span>
+            <svg class="contact-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
+          </a>
+        </li>
+
+        <li>
+          <a class="contact-item" href="mailto:booking@vanahill.com">
+            <span class="contact-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="5" width="18" height="14" rx="2"/>
+                <path d="M3 7l9 6 9-6"/>
+              </svg>
+            </span>
+            <span class="contact-info">
+              <span class="contact-label">อีเมล / Email</span>
+              <span class="contact-value">booking@vanahill.com</span>
+            </span>
+            <svg class="contact-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
+          </a>
+        </li>
+      </ul>
+
+      <div class="info-hours">
+        <strong>เปิดให้บริการทุกวัน</strong><br>
+        09:00 — 21:00 น. (GMT+7)
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT VILLA ═══ -->
+<section class="villa-section" id="villa">
+  <div class="villa-feature">
+    <!-- Visual -->
+    <div class="villa-visual">
+      <svg class="scene" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <!-- moon -->
+        <circle cx="320" cy="90" r="32" fill="rgba(212,183,138,0.3)"/>
+        <circle cx="320" cy="90" r="20" fill="rgba(246,240,228,0.4)"/>
+        <!-- distant hills -->
+        <path d="M0 240 Q100 200 200 220 T400 210 L400 300 L0 300 Z" fill="rgba(20,38,33,0.4)"/>
+        <path d="M0 270 Q140 240 280 260 T400 250 L400 320 L0 320 Z" fill="rgba(20,38,33,0.55)"/>
+        <!-- villa silhouette -->
+        <g fill="rgba(246,240,228,0.12)" stroke="rgba(212,183,138,0.3)" stroke-width="0.8">
+          <rect x="120" y="290" width="160" height="60"/>
+          <path d="M115 290 L200 260 L285 290 Z"/>
+          <rect x="145" y="310" width="22" height="40" fill="rgba(212,183,138,0.18)"/>
+          <rect x="180" y="310" width="22" height="22" fill="rgba(212,183,138,0.18)"/>
+          <rect x="215" y="310" width="22" height="22" fill="rgba(212,183,138,0.18)"/>
+          <rect x="245" y="310" width="22" height="22" fill="rgba(212,183,138,0.18)"/>
+        </g>
+        <!-- pool -->
+        <ellipse cx="200" cy="400" rx="160" ry="40" fill="rgba(107,133,118,0.45)"/>
+        <ellipse cx="200" cy="395" rx="155" ry="36" fill="rgba(107,133,118,0.25)"/>
+        <!-- pool ripples -->
+        <path d="M70 395 Q100 400 130 395 M170 410 Q200 415 230 410 M270 395 Q300 400 330 395"
+          stroke="rgba(246,240,228,0.3)" stroke-width="1" fill="none"/>
+        <path d="M90 415 Q120 420 150 415 M250 415 Q280 420 310 415"
+          stroke="rgba(246,240,228,0.2)" stroke-width="1" fill="none"/>
+        <!-- foreground palms -->
+        <g stroke="rgba(20,38,33,0.7)" stroke-width="1.5" fill="none">
+          <path d="M40 500 Q42 450 38 400 Q35 360 30 330"/>
+          <path d="M30 330 Q15 335 5 350 M30 350 Q50 355 65 365 M30 370 Q12 380 0 395 M30 395 Q55 400 70 415 M30 420 Q15 430 0 445"/>
+        </g>
+        <g stroke="rgba(20,38,33,0.6)" stroke-width="1.2" fill="none">
+          <path d="M370 500 Q368 460 372 420 Q375 385 378 360"/>
+          <path d="M378 360 Q395 365 400 380 M378 378 Q358 383 345 393 M378 396 Q395 405 400 420 M378 415 Q360 420 348 432"/>
+        </g>
+        <!-- stars -->
+        <circle cx="80" cy="60" r="1" fill="rgba(246,240,228,0.6)"/>
+        <circle cx="180" cy="40" r="1" fill="rgba(246,240,228,0.5)"/>
+        <circle cx="240" cy="80" r="1" fill="rgba(246,240,228,0.7)"/>
+        <circle cx="60" cy="120" r="1" fill="rgba(246,240,228,0.4)"/>
+        <circle cx="350" cy="160" r="1" fill="rgba(246,240,228,0.5)"/>
+      </svg>
+      <div class="villa-visual-tag">a private sanctuary</div>
+    </div>
+
+    <!-- Details -->
+    <div class="villa-details">
+      <div class="section-eyebrow">The Villa</div>
+      <h2 class="section-title">บ้านหลังเดียว <em>เพื่อคุณ</em></h2>
+      <p class="villa-details-desc">
+        พูลวิลล่าส่วนตัวออกแบบเพื่อครอบครัวใหญ่และกลุ่มเพื่อน รองรับได้ 10–12 ท่านอย่างสบาย — ไม่มีเพื่อนบ้าน ไม่มีคนแปลกหน้า มีเพียงคุณและคนที่คุณรักท่ามกลางธรรมชาติ
+      </p>
+
+      <div class="quick-stats">
+        <div class="quick-stat">
+          <div class="quick-stat-num">3</div>
+          <div class="quick-stat-label">Bedrooms</div>
+        </div>
+        <div class="quick-stat">
+          <div class="quick-stat-num">5</div>
+          <div class="quick-stat-label">Queen Beds</div>
+        </div>
+        <div class="quick-stat">
+          <div class="quick-stat-num">10–12</div>
+          <div class="quick-stat-label">Guests</div>
+        </div>
+      </div>
+
+      <div class="amenities-title">Amenities · สิ่งอำนวยความสะดวก</div>
+      <ul class="amenities">
+        <li class="amenity">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 18s2-2 5-2 4 2 7 2 5-2 5-2 2 2 3 2"/><path d="M2 14s2-2 5-2 4 2 7 2 5-2 5-2 2 2 3 2"/><path d="M7 12V5a3 3 0 016 0v7"/></svg>
+          สระว่ายน้ำ + สไลเดอร์
+        </li>
+        <li class="amenity">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="10" width="18" height="9" rx="1"/><path d="M3 14h18M5 10V7a2 2 0 012-2h10a2 2 0 012 2v3"/></svg>
+          แอร์ทุกห้อง
+        </li>
+        <li class="amenity">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 3v18M19 3v18M5 8h14M5 14h14"/><circle cx="9" cy="6" r="1"/></svg>
+          ครัวพร้อมอุปกรณ์
+        </li>
+        <li class="amenity">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12.55a11 11 0 0114 0M2 8.5a16 16 0 0120 0M8.5 16.5a6 6 0 017 0"/><circle cx="12" cy="20" r="0.5" fill="currentColor"/></svg>
+          Wi-Fi ความเร็วสูง
+        </li>
+        <li class="amenity">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 9h14M6 9l1 8a3 3 0 003 3h4a3 3 0 003-3l1-8"/><path d="M9 5c0 1-1 2-1 3M13 4c0 1.5-1 2.5-1 4M17 5c0 1-1 2-1 3"/></svg>
+          BBQ
+        </li>
+        <li class="amenity">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0"/><path d="M12 18v3M8 21h8"/></svg>
+          คาราโอเกะ
+        </li>
+        <li class="amenity">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="8" width="20" height="10" rx="1"/><circle cx="7" cy="13" r="1.2" fill="currentColor"/><circle cx="12" cy="13" r="1.2"/><circle cx="17" cy="13" r="1.2" fill="currentColor"/><path d="M5 18v3M19 18v3"/></svg>
+          โต๊ะพูล
+        </li>
+        <li class="amenity">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="11" width="18" height="8" rx="1"/><circle cx="7" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M5 11V7l3-2h8l3 2v4"/></svg>
+          ที่จอดรถส่วนตัว
+        </li>
+        <li class="amenity">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2v8M12 22V12M5 6c3 0 5 2 5 4M19 6c-3 0-5 2-5 4M5 18c3 0 5-2 5-4M19 18c-3 0-5-2-5-4"/></svg>
+          สวนส่วนตัว
+        </li>
+        <li class="amenity">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21h18M6 21V10l6-4 6 4v11M9 14h2M13 14h2M9 18h2M13 18h2"/></svg>
+          ระเบียงชมวิว
+        </li>
+      </ul>
+
+      <div class="villa-price-display">
+        <span class="villa-price-amount">฿4,900 <small>– ฿8,900</small></span>
+        <span class="villa-price-unit">per night</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LOCATION ═══ -->
+<section class="location-section" id="location">
+  <div class="section-header">
+    <div class="section-eyebrow">Find Us</div>
+    <h2 class="section-title">สัตหีบ <em>ชลบุรี</em></h2>
+    <p class="section-subtitle">ห่างจากกรุงเทพฯ ประมาณ 2 ชั่วโมงโดยรถยนต์ — เดินทางสะดวก ใกล้ชายหาดและธรรมชาติ</p>
+  </div>
+
+  <div class="location-stage">
+    <div class="map-wrapper">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3891.728614774581!2d100.9198717!3d12.731119200000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31028b0067bd61c1%3A0xaeca83d5526a8530!2sVana%20Hill%20Poolvilla!5e0!3m2!1sth!2sth!4v1777779075977!5m2!1sth!2sth"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen></iframe>
+    </div>
+
+    <div class="location-overlay">
+      <h3>Visit Us</h3>
+      <p class="location-overlay-tag">— มาเยี่ยมเรา —</p>
+
+      <div class="location-row">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        <div class="location-row-content">
+          <div class="location-row-label">ที่อยู่</div>
+          <div class="location-row-value">อำเภอสัตหีบ<br>จังหวัดชลบุรี 20180</div>
+        </div>
+      </div>
+
+      <div class="location-row">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 7v5l3 2"/>
+        </svg>
+        <div class="location-row-content">
+          <div class="location-row-label">การเดินทาง</div>
+          <div class="location-row-value">~ 2 ชม. จากกรุงเทพฯ<br>~ 30 นาที จากพัทยา</div>
+        </div>
+      </div>
+
+      <a class="directions-btn" href="https://maps.app.goo.gl/yLjSNJPTpmoFyJbR6" target="_blank" rel="noopener">
+        เปิดใน Google Maps
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer id="contact">
+  <div class="footer-logo">VANAHILL</div>
+  <div class="footer-tagline">— private pool villa retreat —</div>
+  <div class="footer-contact">
+    <div>📞 099-618-8871 · 061-295-6509</div>
+    <div>✉ booking@vanahill.com</div>
+    <div>📍 Sattahip, Chonburi</div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-copy">© 2026 VANAHILL POOLVILLA · ALL RIGHTS RESERVED</div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════
+   ⚙️  CONFIGURATION
+   ═══════════════════════════════════════════════ */
+// แทนที่ URL ด้านล่างด้วย Web App URL ของ Google Apps Script ที่ deploy
+// (ดูคู่มือใน SETUP.md)
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzqsLtdEfi78NLPZk_lLuhobYxbze34Q4TdelCZ1hX_GF-3ahC7VOySlRNjMN5OpJtUzg/exec';
+
+// ราคาห้องพัก — แก้ที่นี่ได้เลย (หน่วย: บาท/คืน)
+const PRICING = {
+  byDay: {
+    0: 4900, // อาทิตย์
+    1: 4900, // จันทร์
+    2: 4900, // อังคาร
+    3: 4900, // พุธ
+    4: 4900, // พฤหัส
+    5: 5900, // ศุกร์
+    6: 6900  // เสาร์
+  },
+  holiday: 8900 // ราคาช่วงเทศกาล
+};
+
+// ช่วงวันหยุดเทศกาล (รูปแบบ MM-DD) — ปรับช่วงวันได้ตามต้องการ
+// ปีใหม่ครอสปี (ธ.ค. → ม.ค.) ระบบรองรับเอง
+const HOLIDAYS = [
+  { name: 'ปีใหม่',    start: '12-30', end: '01-02' },
+  { name: 'สงกรานต์', start: '04-12', end: '04-16' }
+];
+
+// 🔥 Hot Price (ราคาโปรโมชั่น Last Minute)
+// ถ้าวันที่อยู่ในช่วงนี้นับจากวันนี้ และยังว่างอยู่ → ลดราคาอัตโนมัติ
+const HOT_PRICE = {
+  daysAhead: 2,    // กี่วันนับจากวันนี้ที่ได้ราคาพิเศษ
+  discount: 500    // ส่วนลด (บาท)
+};
+
+/* ═══════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════ */
+let currentDate = new Date();
+let currentMonth = currentDate.getMonth();
+let currentYear = currentDate.getFullYear();
+let bookedRanges = []; // [{ start, end, guest }, ...]
+
+const monthNames = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const dayNames = ['อา','จ','อ','พ','พฤ','ศ','ส'];
+
+/* ═══════════════════════════════════════════════
+   HELPERS
+   ═══════════════════════════════════════════════ */
+function ymd(d) {
+  if (typeof d === 'string') return d.split('T')[0];
+  if (!(d instanceof Date)) d = new Date(d);
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function parseYMD(s) {
+  const [y,m,d] = s.split('-').map(Number);
+  return new Date(y, m-1, d);
+}
+function categorizeStatus(statusStr) {
+  const s = String(statusStr || '').toLowerCase().trim();
+  if (!s) return 'booked';
+  if (s === 'cancelled' || s === 'canceled' || s.includes('ยกเลิก')) return 'cancelled';
+  if (s.includes('maintenance') || s.includes('ปรับปรุง') || s === 'closed' || s === 'ปิด' || s.includes('ปิดบริการ')) return 'maintenance';
+  return 'booked';
+}
+function getBookingForDate(dateStr) {
+  const t = parseYMD(dateStr).getTime();
+  for (const b of bookedRanges) {
+    const s = parseYMD(b.start).getTime();
+    const e = parseYMD(b.end).getTime();
+    if (t >= s && t < e) return b;
+  }
+  return null;
+}
+function getBookingGuest(dateStr) {
+  const b = getBookingForDate(dateStr);
+  return b ? (b.guest || 'ไม่ว่าง') : null;
+}
+function isDateBooked(dateStr) {
+  return getBookingForDate(dateStr) !== null;
+}
+function isWeekend(dateObj) {
+  const d = dateObj.getDay();
+  return d === 5 || d === 6; // ศุกร์ ส. (วันราคาพิเศษ)
+}
+function isHoliday(dateObj) {
+  const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+  const d = String(dateObj.getDate()).padStart(2, '0');
+  const md = `${m}-${d}`;
+  for (const h of HOLIDAYS) {
+    if (h.start <= h.end) {
+      if (md >= h.start && md <= h.end) return true;
+    } else {
+      // ช่วงครอสปี เช่น 12-30 ถึง 01-02
+      if (md >= h.start || md <= h.end) return true;
+    }
+  }
+  return false;
+}
+function getPrice(dateObj) {
+  if (isHoliday(dateObj)) return PRICING.holiday;
+  return PRICING.byDay[dateObj.getDay()];
+}
+function isHotPrice(dateObj, today) {
+  // วันที่อยู่ในช่วง [วันนี้, วันนี้ + daysAhead]
+  const t = dateObj.getTime();
+  const todayMs = today.getTime();
+  const dayMs = 86400000;
+  return t >= todayMs && t <= todayMs + HOT_PRICE.daysAhead * dayMs;
+}
+function formatPrice(n) {
+  return n.toLocaleString('en-US');
+}
+
+/* ═══════════════════════════════════════════════
+   CALENDAR
+   ═══════════════════════════════════════════════ */
+function renderCalendar() {
+  const grid = document.getElementById('calendarGrid');
+  grid.innerHTML = '';
+  document.getElementById('monthTitle').textContent = `${monthNames[currentMonth]} ${currentYear + 543}`;
+
+  dayNames.forEach((name, idx) => {
+    const el = document.createElement('div');
+    el.className = 'day-name';
+    if (idx === 5 || idx === 6) el.classList.add('weekend'); // ศ. ส.
+    el.textContent = name;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+  const daysInMonth = new Date(currentYear, currentMonth+1, 0).getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cell = document.createElement('div');
+    cell.className = 'day';
+
+    const dateObj = new Date(currentYear, currentMonth, d);
+    const dateStr = ymd(dateObj);
+    const isPast = dateObj < today;
+    const isToday = dateObj.getTime() === today.getTime();
+    const booking = getBookingForDate(dateStr);
+    const isMaintenance = booking && booking.type === 'maintenance';
+    const isBooked = booking && booking.type === 'booked';
+    const weekend = isWeekend(dateObj);
+    const holiday = isHoliday(dateObj);
+    const hot = !booking && !isPast && isHotPrice(dateObj, today);
+
+    if (weekend) cell.classList.add('weekend');
+    if (holiday) cell.classList.add('holiday');
+    if (hot) cell.classList.add('hot');
+    if (isPast) cell.classList.add('disabled');
+    if (isToday) cell.classList.add('today');
+    if (isMaintenance) cell.classList.add('maintenance');
+    if (isBooked) cell.classList.add('booked');
+
+    const numEl = document.createElement('div');
+    numEl.className = 'day-num';
+    numEl.textContent = d;
+    cell.appendChild(numEl);
+
+    if (!isPast) {
+      if (isMaintenance) {
+        const statusEl = document.createElement('div');
+        statusEl.className = 'day-status';
+        statusEl.textContent = 'ปิดปรับปรุง';
+        statusEl.title = 'ปิดปรับปรุง';
+        cell.appendChild(statusEl);
+      } else if (isBooked) {
+        const guestName = booking.guest || 'ไม่ว่าง';
+        const statusEl = document.createElement('div');
+        statusEl.className = 'day-status';
+        statusEl.textContent = guestName;
+        statusEl.title = guestName;
+        cell.appendChild(statusEl);
+      } else {
+        const basePrice = getPrice(dateObj);
+        const finalPrice = hot ? basePrice - HOT_PRICE.discount : basePrice;
+        if (hot) {
+          // ไฟใหญ่ๆ แยกแถวให้สะดุดตา
+          const flameEl = document.createElement('div');
+          flameEl.className = 'day-flame';
+          flameEl.innerHTML = '<svg class="flame-icon" viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/></svg>';
+          cell.appendChild(flameEl);
+        }
+        const priceEl = document.createElement('div');
+        priceEl.className = 'day-price';
+        priceEl.textContent = formatPrice(finalPrice);
+        if (hot) {
+          priceEl.title = `Hot Price! ลด ฿${HOT_PRICE.discount} จาก ฿${formatPrice(basePrice)}`;
+        }
+        cell.appendChild(priceEl);
+      }
+    }
+
+    grid.appendChild(cell);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   EVENTS
+   ═══════════════════════════════════════════════ */
+document.getElementById('prevMonth').addEventListener('click', () => {
+  currentMonth--;
+  if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+  renderCalendar();
+});
+document.getElementById('nextMonth').addEventListener('click', () => {
+  currentMonth++;
+  if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+  renderCalendar();
+});
+
+/* ═══════════════════════════════════════════════
+   GOOGLE SHEETS — โหลดวันที่ถูกจองแล้ว
+   ═══════════════════════════════════════════════ */
+async function loadBookings() {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('YOUR_GOOGLE')) {
+    console.warn('⚠️ Apps Script URL ยังไม่ได้ตั้งค่า — แสดงข้อมูลสาธิต');
+    const today = new Date();
+    const plus = (n) => { const d = new Date(today); d.setDate(d.getDate()+n); return ymd(d); };
+    bookedRanges = [
+      { start: plus(7),  end: plus(10), guest: 'พี่ส้ม', type: 'booked' },
+      { start: plus(15), end: plus(18), guest: 'คุณเอก', type: 'booked' },
+      { start: plus(20), end: plus(22), guest: '',       type: 'maintenance' },
+      { start: plus(25), end: plus(28), guest: 'คุณบี',  type: 'booked' }
+    ];
+    renderCalendar();
+    return;
+  }
+  try {
+    const res = await fetch(APPS_SCRIPT_URL + '?action=getBookings');
+    const data = await res.json();
+    if (data.status === 'success') {
+      bookedRanges = [];
+      data.bookings.forEach(b => {
+        const cat = categorizeStatus(b.status);
+        if (cat === 'cancelled') return;
+        bookedRanges.push({
+          start: ymd(b.checkIn),
+          end: ymd(b.checkOut),
+          guest: (b.guestName || '').trim() || 'ไม่ว่าง',
+          type: cat // 'booked' หรือ 'maintenance'
+        });
+      });
+      renderCalendar();
+    }
+  } catch (err) {
+    console.error('โหลดข้อมูลการจองไม่สำเร็จ:', err);
+  }
+}
+
+/* INIT */
+renderCalendar();
+loadBookings();
+</script>
+</body>
+</html>
